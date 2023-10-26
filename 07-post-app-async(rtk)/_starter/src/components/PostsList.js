@@ -1,22 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPostsAction } from "../store/slices/postSlice";
 
-import SearchPost from './SearchPost';
-import './Posts.css';
+import SearchPost from "./SearchPost";
+import "./Posts.css";
 
 const PostsList = () => {
-  return (
-    <>
-      <SearchPost />
-      <div className='posts-list'>
-        <h1>Total Posts : 0</h1>
+	const dispatch = useDispatch();
+	const { postsData, loading, error } = useSelector((state) => state.posts);
 
-        <div className='post-details'>
-          <h3>Title</h3>
-          <p>Body</p>
-        </div>
-      </div>
-    </>
-  );
+	useEffect(() => {
+		dispatch(fetchPostsAction());
+	}, []);
+
+	if (loading) return <h1>Loading....</h1>;
+	if (error) return <h1>{error}</h1>;
+
+	return (
+		<>
+			<SearchPost />
+			<div className="posts-list">
+				<h1>Total Posts : 0</h1>
+				{postsData.map((post) => (
+					<div className="post-details" key={post.id}>
+						<h3>{post.title}</h3>
+						<p>{post.body}</p>
+					</div>
+				))}
+			</div>
+		</>
+	);
 };
 
 export default PostsList;

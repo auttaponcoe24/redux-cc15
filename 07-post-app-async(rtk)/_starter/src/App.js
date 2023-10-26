@@ -1,9 +1,9 @@
 import "./App.css";
 
-import NotesList from "./components/PostsList";
+import PostsList from "./components/PostsList";
 
 function App() {
-  return <NotesList />;
+	return <PostsList />;
 }
 
 export default App;
